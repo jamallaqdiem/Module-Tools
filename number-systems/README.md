@@ -11,36 +11,21 @@ Convert the binary number 101101 to decimal:
 Answer:
 45
 Which is larger: 1000 or 0111?
-Answer:
-1000 = 8
-0111 = 7
-1000 is larger
+Answer: 1000
 Which is larger: 00100 or 01011?
-Answer:
-00100 = 4
-01011 = 11
-01011 is larger
+Answer:01011
 What is 10101 + 01010?
-Answer:
-10101 = 21
-01010 = 10 
-21+10 = 31
+Answer:01011
 What is 10001 + 10001?
-Answer:
-10001 = 17
-17+ 17 = 34
+Answer:11111
 What's the largest number you can store with 4 bits, if you want to be able to represent the number 0?
-Answer:
-1111 = 15 
+Answer: 15 
 How many bits would you need in order to store the numbers between 0 and 255 inclusive?
-Answer:
-11111111 = 8 bits
+Answer: 8 bits
 How many bits would you need in order to store the numbers between 0 and 3 inclusive?
-Answer:
-11 = 2 bits
+Answer: 2 bits
 How many bits would you need in order to store the numbers between 0 and 1000 inclusive?
-Answer:
-1111101000 = 10 bits = 1024
+Answer: 10 bits
 How can you test if a binary number is a power of two (e.g. 1, 2, 4, 8, 16, ...)?
 Answer:
 if the bit have only '1' in it, means i'ts a power of two, if have multiple '1' that's not.
