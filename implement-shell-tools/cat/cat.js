@@ -10,6 +10,16 @@ const showNonBlankNumbers = argv.includes("-b");
 
 //filter the - from the array argv as it's a flag.
 const filePaths = argv.filter((arg) => !arg.startsWith("-"));
+
+const flagsUsed = argv.filter((arg) => arg.startsWith("-"));
+const supportedFlags = ["-n", "-b"];
+for (const flag of flagsUsed) {
+  if (!supportedFlags.includes(flag)) {
+    console.error(`Invalid option try 'node cat.js --help' for more info.`);
+    process.exit(1);
+  }
+}
+
 let counterLines = 1;
 
 for (const path of filePaths) {
@@ -20,21 +30,19 @@ for (const path of filePaths) {
     const splitLines = content.split("\n");
 
     splitLines.forEach((line) => {
-      if (showNumbers) {
-        console.log(`${counterLines++}  ${line}`);
-      } else if (showNonBlankNumbers) {
-        // increment and show numbers only if the line is not empty.
+      let prefix = "";
+
+      if (showNonBlankNumbers) {
         if (line.trim() !== "") {
-          console.log(`${counterLines++}  ${line}`);
-        } else {
-          // print empty lines
-          console.log(line);
+          prefix = `${counterLines++}  `;
         }
-      } else {
-        console.log(line);
+      } else if (showNumbers) {
+        prefix = `${counterLines++}  `;
       }
+      console.log(`${prefix}${line}`);
     });
   } catch (error) {
-    console.log(`Could not read: ${path}`);
+    console.error(`Could not read: ${path}`);
+    process.exit(1);
   }
 }

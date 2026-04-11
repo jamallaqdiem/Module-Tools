@@ -3,16 +3,22 @@ import fs from "node:fs";
 
 const argv = process.argv.slice(2);
 
-const showWords = argv.includes("-w");
-const showLines = argv.includes("-l");
-const showBytes = argv.includes("-c");
-const showCharacters = argv.includes("-m");
+let showWords = argv.includes("-w");
+let showLines = argv.includes("-l");
+let showBytes = argv.includes("-c");
+let showCharacters = argv.includes("-m");
 
 //  filter flags, and getting the string of filename
 const filePaths = argv.filter((arg) => !arg.startsWith("-"));
-
-const noFlags = !showLines && !showCharacters && !showWords && !showCharacters;
-if (!filePaths) {
+// if no flags enable all.
+if (!showLines && !showCharacters && !showWords && !showBytes) {
+  showLines = true;
+  showCharacters = true;
+  showWords = true;
+  showBytes = true;
+}
+// fix bug .length ===0 will be true if nothing provided, instead !filePath will return empty array which result true.
+if (filePaths.length === 0) {
   console.error("PLease provide a file path");
   process.exit(1);
 }
@@ -31,10 +37,10 @@ filePaths.forEach((filePath) => {
 
   let output = "";
 
-  if (showLines || noFlags) output += `${lines} `;
-  if (showWords || noFlags) output += `${words} `;
-  if (showBytes || noFlags) output += `${bytes} `;
-  if (showCharacters || noFlags) output += `${characters} `;
+  if (showLines) output += `${lines} `;
+  if (showWords) output += `${words} `;
+  if (showBytes) output += `${bytes} `;
+  if (showCharacters) output += `${characters} `;
 
   console.log(`${output} ${filePath}`);
 });

@@ -8,6 +8,10 @@ const argv = process.argv.slice(2);
 const filePaths = argv.filter((arg) => !arg.startsWith("-"));
 const showHiddenFiles = argv.includes("-a");
 
+if (filePaths.length > 1) {
+  console.error("Error: This version only supports one directory path a time.");
+  process.exit(1);
+}
 // if no folder provide we use the current one
 const target = filePaths[0] || ".";
 // read the file.
