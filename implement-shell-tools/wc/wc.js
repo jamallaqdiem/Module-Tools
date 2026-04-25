@@ -8,7 +8,6 @@ let showLines = argv.includes("-l");
 let showBytes = argv.includes("-c");
 let showCharacters = argv.includes("-m");
 
-//  filter flags, and getting the string of filename
 const filePaths = argv.filter((arg) => !arg.startsWith("-"));
 // if no flags enable all.
 if (!showLines && !showCharacters && !showWords && !showBytes) {
@@ -17,30 +16,52 @@ if (!showLines && !showCharacters && !showWords && !showBytes) {
   showWords = true;
   showBytes = true;
 }
-// fix bug .length ===0 will be true if nothing provided, instead !filePath will return empty array which result true.
+
 if (filePaths.length === 0) {
   console.error("PLease provide a file path");
   process.exit(1);
 }
-// loop trough the array to get each file path.
+
+let totalLines = 0;
+let totalWords = 0;
+let totalBytes = 0;
+let totalChars = 0;
+
 filePaths.forEach((filePath) => {
-  const content = fs.readFileSync(filePath, "utf-8");
+  try {
+    const content = fs.readFileSync(filePath, "utf-8");
+    const lineArray = content.split("\n");
+    if (content.endsWith("\n")) lineArray.pop(); 
+    const lines = lineArray.length;
+    
+    const words = content.trim().split(/\s+/).filter((word) => word != "").length;
+    const bytes = Buffer.byteLength(content);
+    const characters = content.length;
 
-  const lines = content.split("\n").length - 1;
-  const words = content
-    .trim()
-    .split(/\s+/)
-    .filter((word) => word != "").length;
-  // here I used Buffer.byteLength even if characters and bytes can be the same number .length, however sometimes an emoji or special characters can be heavier 2b or 4b
-  const bytes = Buffer.byteLength(content);
-  const characters = content.length;
+    totalLines += lines;
+    totalWords += words;
+    totalBytes += bytes;
+    totalChars += characters;
 
-  let output = "";
+    let output = "";
+    if (showLines)   output += lines.toString().padStart(8);
+    if (showWords)   output += words.toString().padStart(8);
+    if (showBytes)   output += bytes.toString().padStart(8);
+    if (showCharacters) output += characters.toString().padStart(8)
 
-  if (showLines) output += `${lines} `;
-  if (showWords) output += `${words} `;
-  if (showBytes) output += `${bytes} `;
-  if (showCharacters) output += `${characters} `;
+    console.log(`${output} ${filePath}`); 
+  } catch(error) {
+    console.error(`Error reading ${filePath}: ${error.message}`);
+  }
+}); 
 
-  console.log(`${output} ${filePath}`);
-});
+if (filePaths.length > 1) {
+  let totalOutput = "";
+  if (showLines)  totalOutput += `${totalLines.toString().padStart(8)}`;
+  if (showWords)  totalOutput += `${totalWords.toString().padStart(8)}`;
+  if (showBytes)  totalOutput += `${totalBytes.toString().padStart(8)}`;
+  if (showCharacters) totalOutput += `${totalChars.toString().padStart(8)}`;
+
+  console.log(`${totalOutput} total`);
+}
+  
