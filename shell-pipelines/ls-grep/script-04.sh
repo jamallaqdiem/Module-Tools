@@ -6,4 +6,4 @@ set -euo pipefail
 # Your output should be the number 7.
 #!/bin/bash
 
-ls -1 sample-files | grep '^[A-Z][a-z]*$' | wc -l
+ls -1 sample-files | grep '^[A-Z][^A-Z]*$' | wc -l
